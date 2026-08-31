@@ -1,0 +1,52 @@
+
+
+Neo4j is a graph database management system designed to store and manage connected data using nodes, relationships, and properties.
+
+Cypher is the declarative query language used to create, read, update, and search data stored inside Neo4j.
+
+Node: The primary data entity in a graph that represents an object, person, or concept (like a record or table row).
+Property: A key-value pair stored inside a node or relationship to hold descriptive data attributes.
+Relationship: A directed, named connection that links two nodes together to represent how they are associated.
+
+
+
+
+
+
+--------------------------Data types in cypher----------------------------
+1.String: text ("yagnesh",'smit')
+2.Integer:Whole numbers
+3.Float:floating number [1.92,2.3]
+4.Boolean:(true,false)
+5.List: Ordered collection of values (['Lakers', 'Clippers', 'Nuggets'],["yagnesh", 0, true, 3.9]).
+6.Map: Key-value pairs ({team: 'Clippers', active: true}).
+7.Date / Time: Temporal values using ISO 8601 formatting (date('2026-08-31'), datetime(), duration('P1Y')).
+
+-----------------------Cypher CRUD-------------------------------
+
+
+
+
+=>Creating :
+*CREATE  (russell:PLAYER{name:"Russell Westbrook", age: 33, number: 0, height: 1.91, weight: 91});
+*CREATE (p:Player {name: "Stephen Curry", age: 36, jersey: 30})-[:PLAYS_FOR {since: 2009}]->(t:Team {name: "Golden State Warriors", city: "San Francisco"});
+
+	create is keyword telling neo4j to create a new node(or)relatinship.PLAYER is lable assigned to categorize the node.russell is a temporary variable name , (temp_name:category_name{key:value attributes}).
+
+
+=>Filtering/Querying/Read:
+
+*MATCH (n:PLAYER) RETURN n ; 'match basically look for values where node is player,stores it to temporary variable,returns it using return keyword.'
+
+*MATCH (n:PLAYER{age:33}) return n; 'matches value of age in node player where it is 3 then store that to n returns it ' 
+
+*MATCH (n:PLAYER) return n.age; "return all the nodes named player" 
+
+
+=>Updating:
+
+
+=>Deleting data:
+*MATCH (n) DETACH DELETE n; delete all data available in database.
+
+
