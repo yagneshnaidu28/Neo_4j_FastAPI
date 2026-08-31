@@ -1,6 +1,5 @@
 import os
-import uuid
-from neo4j import GraphDatabase
+from neo4j import GraphDatabase, Session
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional
@@ -49,5 +48,9 @@ class TaskResponse(BaseModel):
     description: str
 
 
-def generate_id() -> str:
-    return str(uuid.uuid4())
+def generate_id(session: Session) -> str:
+    query = "MATCH (t:Task) RETURN max(toInteger(t.id)) AS max_id"
+    result = session.run(query)
+    record = result.single()
+    max_id = record["max_id"] if record and record["max_id"] is not None else 0
+    return str(max_id + 1)

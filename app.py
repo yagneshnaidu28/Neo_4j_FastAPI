@@ -14,7 +14,7 @@ def shutdown_event():
 # CREATE
 @app.post("/tasks", response_model=TaskResponse)
 def create_task(payload: TaskCreate, db: Session = Depends(get_db)):
-    task_id = generate_id()
+    task_id = generate_id(db)
     query = """
     CREATE (t:Task {id: $id, name: $name, task: $task, description: $description})
     RETURN t
