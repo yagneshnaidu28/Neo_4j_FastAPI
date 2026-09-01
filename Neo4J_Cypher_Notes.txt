@@ -28,11 +28,18 @@ Relationship: A directed, named connection that links two nodes together to repr
 
 
 =>Creating :
+
 *CREATE  (russell:PLAYER{name:"Russell Westbrook", age: 33, number: 0, height: 1.91, weight: 91});
 *CREATE (p:Player {name: "Stephen Curry", age: 36, jersey: 30})-[:PLAYS_FOR {since: 2009}]->(t:Team {name: "Golden State Warriors", city: "San Francisco"});
 
 	create is keyword telling neo4j to create a new node(or)relatinship.PLAYER is lable assigned to categorize the node.russell is a temporary variable name , (temp_name:category_name{key:value attributes}).
 
+
+	create is used for also creating relations like syntax will be :CREATE (node1)-[:RELATIONSHIP_TYPE {propertyKey: "propertyValue"}]->(node2)
+																	CREATE (p)-[:PLAYS_FOR {since: 2018}]->(t);
+	if wants a double relations we can use CREATE (p)<-[:PLAYS_FOR {since: 2018}]-(t);
+	
+	we cannot create bi-relation of 2 nodes using one command in neo4j.
 
 =>Filtering/Querying/Read:
 
@@ -42,11 +49,27 @@ Relationship: A directed, named connection that links two nodes together to repr
 
 *MATCH (n:PLAYER) return n.age; "return all the nodes named player" 
 
+*MATCH (p:Player {name: "LeBron James"})RETURN p.name, p.age;   Find a specific node by label and property:
+
+*MATCH (p:Player)WHERE p.age > 35 RETURN p.name, p.age ORDER BY p.age DESC;  find all age>35 order in descending.
+
 
 =>Updating:
 
+*MATCH (p:Player {name: "LeBron James"}) SET p.age = 37, p.mvp_awards = 2 RETURN p;  Update an existing property or add a new one
+
+*MATCH (p:Player {name: "LeBron James"}) SET p:AllStar RETURN p; Add a new label to a node
+
+*MATCH (:Player {name: "LeBron James"})-[r:PLAYS_FOR]->(:Team {name: "LA Lakers"}) SET r.contractYears = 2 RETURN r;  Update a property on a relationship
+
+*MATCH (p:Player {name: "Stephen Curry"}) REMOVE p.mvp_awards RETURN p;  Remove a property (REMOVE)
 
 =>Deleting data:
+
 *MATCH (n) DETACH DELETE n; delete all data available in database.
 
+*MATCH (:Player {name: "LeBron James"})-[r:PLAYS_FOR]->(:Team {name: "LA Lakers"})DELETE r;   Delete only a relationship (keeps the nodes intact)
 
+*MATCH (p:Player {name: "Stephen Curry"}) WHERE NOT (p)--() DELETE p;  Delete a specific node (only works if it has no relationships)
+
+*MATCH (p:Player {name: "Stephen Curry"}) DETACH DELETE p; Delete a node and all connected relationships simultaneously
